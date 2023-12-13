@@ -27,7 +27,7 @@ def h_mirrored(pattern, after_column):
         for i in range(0,len(t1)):
             if t1[i] != t2[i]:
                 errors += 1
-    return errors == 0
+    return errors
 
 def v_mirrored(pattern, after_row):
     l = min(after_row, len(pattern)-after_row)
@@ -38,7 +38,7 @@ def v_mirrored(pattern, after_row):
         for j in range(0,len(pattern[0])):
             if t1[i][j] != t2[i][j]:
                 errors += 1
-    return errors == 0
+    return errors
 
 print(f"{len(patterns)} patterns loaded")
 
@@ -46,11 +46,17 @@ for l in patterns[0]:
     print(l)
 
 total = 0
+smudge_total = 0
 for p in patterns:
     for x in range(1,len(p[0])):
-        if h_mirrored(p, x):
+        if h_mirrored(p, x)==0:
             total += x
+        if h_mirrored(p, x)==1:
+            smudge_total += x
     for y in range(1, len(p)):
-        if v_mirrored(p, y):
+        if v_mirrored(p, y)==0:
             total += 100*y
+        if v_mirrored(p, y)==1:
+            smudge_total += 100*y
 print(total)
+print(smudge_total)
