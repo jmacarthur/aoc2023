@@ -4,10 +4,10 @@ patterns = []
 current_pattern = []
 with open("input13.txt") as f:
     while True:
-        l = f.readline()
-        if l == "":
+        raw_l = f.readline()
+        if raw_l == "":
             break
-        l = l.strip()
+        l = raw_l.strip()
         if l == "":
             if current_pattern:
                 patterns.append(current_pattern)
@@ -24,9 +24,7 @@ def h_mirrored(pattern, after_column):
     for line in pattern:
         t1 = line[after_column-l:after_column]
         t2 = list(reversed(line[after_column:after_column+l]))
-        for i in range(0,len(t1)):
-            if t1[i] != t2[i]:
-                errors += 1
+        errors += sum([0 if t1[i]==t2[i] else 1 for i in range(0,len(t1))])
     return errors
 
 def v_mirrored(pattern, after_row):
@@ -35,9 +33,7 @@ def v_mirrored(pattern, after_row):
     t2 = list(reversed(pattern[after_row:after_row+l]))
     errors = 0
     for i in range(0,len(t1)):
-        for j in range(0,len(pattern[0])):
-            if t1[i][j] != t2[i][j]:
-                errors += 1
+        errors += sum([0 if t1[i][j]==t2[i][j] else 1 for j in range(0,len(pattern[0]))])
     return errors
 
 print(f"{len(patterns)} patterns loaded")
