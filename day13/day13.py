@@ -20,11 +20,25 @@ with open("input13.txt") as f:
 
 def h_mirrored(pattern, after_column):
     l = min(after_column, len(pattern[0])-after_column)
-    return all([list(line[after_column-l:after_column]) == list(reversed(line[after_column:after_column+l])) for line in pattern])
+    errors = 0
+    for line in pattern:
+        t1 = line[after_column-l:after_column]
+        t2 = list(reversed(line[after_column:after_column+l]))
+        for i in range(0,len(t1)):
+            if t1[i] != t2[i]:
+                errors += 1
+    return errors == 0
 
 def v_mirrored(pattern, after_row):
     l = min(after_row, len(pattern)-after_row)
-    return pattern[after_row-l:after_row] == list(reversed(pattern[after_row:after_row+l]))
+    t1 = pattern[after_row-l:after_row]
+    t2 = list(reversed(pattern[after_row:after_row+l]))
+    errors = 0
+    for i in range(0,len(t1)):
+        for j in range(0,len(pattern[0])):
+            if t1[i][j] != t2[i][j]:
+                errors += 1
+    return errors == 0
 
 print(f"{len(patterns)} patterns loaded")
 
