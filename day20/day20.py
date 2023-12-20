@@ -65,12 +65,11 @@ for i in range(0,button_presses):
         if target in devices:
             new_pulses = devices[target].update_input(inputname, value)
             if target == "dr" and value:
+                # The answer to part B is done manually; in our input, 'dr' sends pulses to 'rx'.
+                # Each input to dr switches on with a given frequency, and we can use the least
+                # common multiple of each frequency to find the first time all inputs coincide.
                 print(i, devices[target].inputsignals.values())
-
             pulse_chain.extend(new_pulses)
-        elif target == "rx" and value==False:
-            print(f"rx pressed on button {i+1}")
-            sys.exit(0)
 
 print(f"Total pulses: {low_pulses} + {high_pulses}")
 print(f"Product: {low_pulses*high_pulses}")
