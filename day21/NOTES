@@ -1,0 +1,110 @@
+After 65 steps, the pattern makes its way into the border region which is always clear of rocks.
+Luckily, it hits symmetrically: at (0,65), (65,0), (65,130) and (130,65). So we know the next cell left starts at (130,65).
+
+The clear outer border means the pattern will spread around the border at least as quickly as it can spread through any of the pattern;
+so it will spread up to (130,0) - the top right and (130,130) - the bottom right - at the same speed.
+
+By step 130 in the original grid, we have filled the entire grid with 7757 places. Step 132 is identical, as predicted.
+
+If the grid started filling from the sides, though, it takes longer. Starting from (130,65) - where we would hit at step 66 - we spread to the top right and bottom right after a further 65 steps.
+Convieniently, there appears to be a free channel running down all the centres! So we can predict exactly how far left/right it'll go easily.
+
+Blocks are 131x131. We can say that if you start with one O at the centre of an edge, then 130 steps later the O on the opposite edge will be present, regardless of which direction we go in.
+
+After 26501365 steps:
+
+We did 66 steps to reach into the next four cells;
+
+Then we'll go through a further 202299 cells in each direction, leaving us 130 - we'll *just* get to the end of the 202299th cell in each direction
+
+If 1st is the centre, then we went on 202300 cells in total. We will have some diagonal cells which are about 7/8ths full and some which are 1/8th full.
+
+if n = 5,
+
+     a^
+    ab#
+   ab#*
+  ab#*#
+ ab#*#*
+ab#*#*#
+<#*#*#C****>
+      *
+      *
+      *
+      *
+      *
+      v
+
+
+* = full cell, low-type
+# = full cell, high-type
+C = centre, full cell, low-type
+
+< = starts centre-right and runs 130 cycles.
+^ = starts bottom-centre and runs 130 cycles.
+etc.
+
+a = starts bottom-right and runs 130-66 (64) cycles. (n+1 of these)
+b = starts bottom-right and runs 130+131-66 (195) cycles (n of these)
+
+Similar logic for the other diagonals.
+
+There are (5+4+3+2+1)*4; or N*(n+1)*2, full cells not including the centre.
+
+So let's work the actual count out:
+
+< = 5846
+> = 5846
+^ = 5869
+v = 5823
+
+a1 (br1) = 990, 6813
+
+(bl1) = 978, 6804
+
+(tl1) 977, 6790
+
+(tr1) 1010, 6781
+
+Cells per full cell after 26501365 should be the same as 133 steps; 7748.
+
+So our final sum is 634181459224296 but AOC says this is too low. Didn't count the centre?
+
+Nope, it wasn't that. 634181459232044 is also too low.
+
+From the centre, it's 65 steps to put an O on the edge and 66 to start the next one. Then a further 131 to light the next. but that 131 isn't divisible by , which worries me.
+
+For example, from centre right, 130 just lights the left edge, which means 131 will light on the next one. The cycle length is 131. But that means that half are out of phase! Centre will be at an odd cycle count, surroundings should be odd too (66 cycle propagation) but next ones will be at even counts.
+
+Diagonals are also 66? So we should get them on odd cycle counts too?
+
+So let's try that again - centre centre after 131*3 = 7748
+
+Centre right after 131*3 = 7757
+
+Bottom right after 131*3 = 7748
+
+top right after 131*3 = 7748
+
+Is this accurate though?
+
+It should be:
+
+centre centre after 131*3  = 7748
+centre left after 131*3+66 = 7757
+top right after 131*3+66+66 = 7748
+
+(same thing)
+
+So we will have a checkerboard here. there are 5+3+1  high-type and 2+4 low-type.
+
+5 3 1
+1 3 5
+6 6 6 (n+1)*(n//2+1)
+
+(n+1)*(n//2) (if n is odd, which it is)
+
+With this checkerboard, I get 634549786842035. But that's too high.
+
+
+We could make a model of this using a 5*5 grid to check our method.
